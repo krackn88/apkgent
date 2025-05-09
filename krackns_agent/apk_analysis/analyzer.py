@@ -4,6 +4,8 @@ import glob
 import yara
 from androguard.core.apk import APK
 from .akamai_tools import extract_akamai_js
+from telegram import Update
+from telegram.ext import CallbackContext, MessageHandler, Filters
 
 def load_apk_file(file_path: str) -> dict:
     """Load and parse the APK file using Androguard."""
@@ -111,3 +113,7 @@ def analyze_apk(file_path: str) -> dict:
         "analysis_result": analysis_result,
         "akamai_js": akamai_js
     }
+
+def debug_document(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(f"Received document: {update.message.document.file_name} (MIME: {update.message.document.mime_type})")
+dispatcher.add_handler(MessageHandler(Filters.document, debug_document))
