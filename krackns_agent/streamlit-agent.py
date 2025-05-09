@@ -1,0 +1,1 @@
+   apktool d app-name.apk -o output-folder

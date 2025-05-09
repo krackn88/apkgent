@@ -1,0 +1,23 @@
+# Existing requirements
+streamlit
+pyTelegramBotAPI
+python-dotenv
+requests
+apkutils-py
+androguard
+pyaxmlparser
+
+# Optional: for type hints and linting
+mypy
+
+# Optional: for running shell commands (Python 3.5+ has subprocess built-in)
+# subprocess32; python_version < '3.5'
+
+# Optional: for improved logging and debugging
+loguru
+
+# Optional: for YAML config support
+pyyaml
+
+# Optional: for database support (if you want to persist results)
+sqlalchemy

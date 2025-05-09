@@ -1,0 +1,2 @@
+[console_scripts]
+create-mcp-server = create_mcp_server:main
