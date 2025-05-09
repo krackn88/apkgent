@@ -1,17 +1,22 @@
-# Existing requirements
+# Core bot and web
+python-telegram-bot==13.15
 streamlit
-pyTelegramBotAPI
 python-dotenv
 requests
-apkutils-py
+
+# APK analysis
+apkutils
 androguard
 pyaxmlparser
 
+# Static & dynamic analysis
+jsbeautifier
+yara-python
+frida-tools
+frida
+
 # Optional: for type hints and linting
 mypy
-
-# Optional: for running shell commands (Python 3.5+ has subprocess built-in)
-# subprocess32; python_version < '3.5'
 
 # Optional: for improved logging and debugging
 loguru
@@ -19,5 +24,8 @@ loguru
 # Optional: for YAML config support
 pyyaml
 
-# Optional: for database support (if you want to persist results)
+# Optional: for database support
 sqlalchemy
+
+# For decompilation (JADX CLI must be installed separately)
+jadx
