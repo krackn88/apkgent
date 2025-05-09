@@ -7,37 +7,48 @@ APK_MIRRORS = [
 ]
 
 def download_apk_from_apkpure(package_name: str, dest_path: str) -> bool:
-    """
-    Download the latest APK for the given package from APKPure.
-    Returns True if successful, False otherwise.
-    """
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    logger = logging.getLogger("apkpure_download")
     try:
         url = f"https://apkpure.com/search?q={package_name}"
         resp = requests.get(url, timeout=10)
+        logger.debug(f"Search URL: {url}, Status: {resp.status_code}")
         if resp.status_code != 200:
+            logger.error(f"Failed to fetch search page: {resp.status_code}")
             return False
+        logger.debug(f"Search page content: {resp.text[:1000]}")
         match = re.search(r'/[a-z0-9\-]+/([a-zA-Z0-9\.]+)', resp.text)
         if not match:
+            logger.error("No app path found in search page.")
             return False
         app_path = match.group(0)
         app_url = f"https://apkpure.com{app_path}"
         app_resp = requests.get(app_url, timeout=10)
+        logger.debug(f"App URL: {app_url}, Status: {app_resp.status_code}")
         if app_resp.status_code != 200:
+            logger.error(f"Failed to fetch app page: {app_resp.status_code}")
             return False
+        logger.debug(f"App page content: {app_resp.text[:1000]}")
         match = re.search(r'href="(https://d.apkpure.com/[^\"]+\.apk)"', app_resp.text)
         if not match:
+            logger.error("No APK download link found in app page.")
             return False
         apk_url = match.group(1)
+        logger.debug(f"APK download URL: {apk_url}")
         apk_resp = requests.get(apk_url, stream=True, timeout=30)
+        logger.debug(f"APK download status: {apk_resp.status_code}")
         if apk_resp.status_code == 200:
             with open(dest_path, 'wb') as f:
                 for chunk in apk_resp.iter_content(chunk_size=8192):
                     if chunk:
                         f.write(chunk)
+            logger.info(f"APK downloaded to {dest_path}")
             return True
+        logger.error(f"Failed to download APK: {apk_resp.status_code}")
         return False
     except Exception as e:
-        print(f"Error downloading APK: {e}")
+        logger.exception(f"Error downloading APK: {e}")
         return False
 
 def download_apk(package_name: str, dest_path: str, mirror: str = "apkpure") -> bool:

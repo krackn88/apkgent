@@ -2,7 +2,7 @@ import subprocess
 import os
 import glob
 import yara
-from androguard.core.bytecodes.apk import APK
+from androguard.core.apk import APK
 from .akamai_tools import extract_akamai_js
 
 def load_apk_file(file_path: str) -> dict:
